@@ -1,0 +1,34 @@
+databaseChangeLog:
+  - changeSet:
+      id: V1-001-create-table-Batata
+      author: init-commit
+      preConditions:
+        - onFail: MARK_RAN
+          not:
+            tableExists:
+              tableName: Batata
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: batata_pkey
+                  name: id
+                  type: INTEGER
+              - column:
+                  constraints:
+                    nullable: false
+                  name: name
+                  type: VARCHAR(50)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: type
+                  type: VARCHAR(50)
+              - column:
+                  name: last_modification
+                  type: TIMESTAMP
+            tableName: Batata

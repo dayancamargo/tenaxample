@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="1 hour">
+    <property name="LOG_PATH" value="log"/>
+    <property name="LOG_FILE" value="batata"/>
+    <property name="LOG_MAX_SIZE" value="10MB"/>
+    <property name="LOG_SERVER" value="INFO"/>
+    <property name="LOG_APPLICATION" value="DEBUG"/>
+
+    <appender class="ch.qos.logback.core.rolling.RollingFileAppender" name="fileAppender">
+        <File>${LOG_PATH}/${LOG_FILE}.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- rollover daily -->
+            <FileNamePattern>${LOG_PATH}/compressed/${LOG_FILE}.%d{yyyy-MM-dd}.log.gz</FileNamePattern>
+            <!-- keep 7 days' worth of history -->
+            <MaxHistory>7</MaxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>[%X{correlation}] %date %-5level %class{30} %message %n</pattern>
+        </encoder>
+    </appender>
+
+    <appender class="ch.qos.logback.core.ConsoleAppender" name="consoleAppender">
+        <encoder>
+            <pattern>%cyan([%X{correlation}]) %green(%date %-5level) %yellow(%class{30}) %gray(%message %n)</pattern>
+        </encoder>
+    </appender>
+
+    <logger additivity="false" level="${LOG_APPLICATION}" name="com.batata.tenaxample">
+        <appender-ref ref="fileAppender"/>
+        <appender-ref ref="consoleAppender"/>
+    </logger>
+
+    <root level="${LOG_SERVER}">
+        <appender-ref ref="fileAppender"/>
+        <appender-ref ref="consoleAppender"/>
+    </root>
+
+</configuration>

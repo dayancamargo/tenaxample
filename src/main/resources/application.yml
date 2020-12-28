@@ -1,0 +1,44 @@
+### Basic Application Settings
+
+### Server Settings
+server:
+  port: 8888
+
+### Actuator Settings
+management:
+  endpoints:
+    enabled-by-default: true
+    health:
+      show-details: "always"
+    logfile:
+      external-file: "Batata.log"
+    web:
+      exposure:
+        include: "*"
+
+### Data Source Settings
+spring:
+  datasource:
+    jmx:
+      enable: true
+    driver-class-name: "org.h2.Driver"
+    username: "sa"
+    password:
+    url: "jdbc:h2:mem:testdb"
+  #Server:{server.port}/{spring.h2.console.path}   -> http:localhost:8888/h2
+  h2:
+    console:
+      enabled: true
+      path: "/h2"
+  #jpa sql logs
+  jpa:
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+  liquibase:
+    enabled: true
+
+### Log Settings
+logging:
+  config: "logback-spring.xml"
