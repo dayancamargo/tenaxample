@@ -1,5 +1,6 @@
 package com.tenaxample.controller;
 
+import com.tenaxample.service.BatataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
@@ -7,7 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.tenaxample.BatataService;
 import com.tenaxample.model.entity.Batata;
 import com.tenaxample.model.response.Response;
 

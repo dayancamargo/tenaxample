@@ -1,4 +1,4 @@
-package com.tenaxample;
+package com.tenaxample.service;
 
 import java.util.List;
 

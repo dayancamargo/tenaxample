@@ -25,7 +25,7 @@
         </encoder>
     </appender>
 
-    <logger additivity="false" level="${LOG_APPLICATION}" name="com.batata.tenaxample">
+    <logger additivity="false" level="${LOG_APPLICATION}" name="com.tenaxample">
         <appender-ref ref="fileAppender"/>
         <appender-ref ref="consoleAppender"/>
     </logger>

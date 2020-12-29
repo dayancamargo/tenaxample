@@ -11,21 +11,13 @@ management:
     health:
       show-details: "always"
     logfile:
-      external-file: "Batata.log"
+      external-file: "tenant.log"
     web:
       exposure:
         include: "*"
 
 ### Data Source Settings
 spring:
-  datasource:
-    jmx:
-      enable: true
-    driver-class-name: "org.h2.Driver"
-    username: "sa"
-    password:
-    url: "jdbc:h2:mem:testdb"
-  #Server:{server.port}/{spring.h2.console.path}   -> http:localhost:8888/h2
   h2:
     console:
       enabled: true
@@ -37,8 +29,26 @@ spring:
         show_sql: true
         format_sql: true
   liquibase:
-    enabled: true
+    enabled: false
 
 ### Log Settings
 logging:
   config: "logback-spring.xml"
+
+### Tenant datasource Settings
+tenants:
+  datasources:
+    default:
+      driver-class-name: "org.h2.Driver"
+      username: "sa"
+      password:
+      url: "jdbc:h2:mem:defaulttestdb"
+      maximum-pool-size: 16
+      pool-name: Hikari-Default
+    example:
+      driver-class-name: "org.h2.Driver"
+      username: "sa"
+      password:
+      url: "jdbc:h2:mem:exampletestdb"
+      maximum-pool-size: 16
+      pool-name: Hikari-Example

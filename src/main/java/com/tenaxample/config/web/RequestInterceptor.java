@@ -1,15 +1,14 @@
-package com.tenaxample.config;
+package com.tenaxample.config.web;
 
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.tenaxample.config.datasource.TenantStorage;
 import org.slf4j.MDC;
 import org.springframework.web.servlet.AsyncHandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
-
-import com.tenaxample.exception.BaseException;
 
 /**
  * An interceptor to add a correlation-id on logback; this will put a [correlation-id] value on all logs;
@@ -23,7 +22,6 @@ public class RequestInterceptor implements AsyncHandlerInterceptor {
 
         MDC.put("correlation", getCorrelation(request));
         setTenant(request);
-
         return true;
     }
 
@@ -31,7 +29,7 @@ public class RequestInterceptor implements AsyncHandlerInterceptor {
     public void postHandle(
             HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView)
             throws Exception {
-//        TenantContext.clear();
+        TenantStorage.clear();
     }
 
     private String getCorrelation(final HttpServletRequest request) {
@@ -49,9 +47,9 @@ public class RequestInterceptor implements AsyncHandlerInterceptor {
         System.out.println("____________________________________________");
 
         if (tenantID == null) {
-            throw  new BaseException("X-TenantID not present in the Request Header");
+            System.out.println("X-TenantID not present in the Request Header");
+            tenantID = "default";
         }
-//        TenantContext.setCurrentTenant(tenantID);
-//        return true;
+        TenantStorage.setTenantId(tenantID);
     }
 }

@@ -1,4 +1,4 @@
-package com.tenaxample.config;
+package com.tenaxample.config.web;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
