@@ -10,10 +10,10 @@ import org.springframework.stereotype.Service;
 import com.tenaxample.model.entity.Batata;
 import com.tenaxample.repository.BatataRepository;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 
 @Service
-@Slf4j
+@Log4j2
 public class BatataService {
 
     private BatataRepository batataRepository;
@@ -24,7 +24,12 @@ public class BatataService {
     }
 
     public List findAll() {
-       return batataRepository.findAll();
+//        try {
+//            Thread.sleep(5000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+        return batataRepository.findAll();
     }
 
     public Page<Batata> pageableFindAll(Pageable page) {

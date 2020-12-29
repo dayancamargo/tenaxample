@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+    <Properties>
+        <Property name="LOG_PATH" value="log"/>
+        <Property name="LOG_FILE" value="tenant"/>
+        <Property name="LOG_MAX_SIZE" value="10MB"/>
+        <Property name="LOG_SERVER" value="info"/>
+        <Property name="LOG_APPLICATION" value="debug"/>
+        <Property name="LOG_QUERY" value="TRACE"/>
+    </Properties>
+
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout disableAnsi="false">
+                <pattern>%highlight{%d{ISO8601} [%X{correlation}] %-5level %logger{1.}: %msg %throwable{10}%n}{INFO=normal}</pattern>
+            </PatternLayout>
+        </Console>
+
+        <RollingFile name="RollingFile"
+                     fileName="./${LOG_PATH}/${LOG_FILE}.log"
+                     filePattern="./${LOG_PATH}/${date:yyyy-MM}/${LOG_FILE}-%d{-dd-MMMM-yyyy}-%i.log.gz">
+            <PatternLayout>
+                <pattern>%d{ISO8601} [%X{correlation}] %-5level %logger{1.} %m%xThrowable%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <!-- OnStartupTriggeringPolicy policy causes a rollover if the log file is older than the current JVM's start time and the minimum file size is met or exceeded. -->
+                <OnStartupTriggeringPolicy />
+                <!-- The SizeBasedTriggeringPolicy causes a rollover once the file has reached the specified size. -->
+                <SizeBasedTriggeringPolicy size="${LOG_MAX_SIZE}" />
+                <!-- The SizeBasedTriggeringPolicy causes a rollover each day -->
+                <TimeBasedTriggeringPolicy />
+            </Policies>
+            <!-- keep up to 10 files before removing them -->
+            <DefaultRolloverStrategy max="10"/>
+        </RollingFile>
+    </Appenders>
+
+    <Loggers>
+        <Logger name="com.tenaxample" level="${LOG_APPLICATION}" additivity="false">
+            <AppenderRef ref="Console" />
+            <AppenderRef ref="RollingFile" />
+        </Logger>
+
+        <Root level="${LOG_SERVER}">
+            <AppenderRef ref="Console" />
+            <AppenderRef ref="RollingFile" />
+        </Root>
+    </Loggers>
+
+</Configuration>

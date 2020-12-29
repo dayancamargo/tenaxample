@@ -5,14 +5,18 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.tenaxample.config.datasource.TenantStorage;
 import org.slf4j.MDC;
 import org.springframework.web.servlet.AsyncHandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.tenaxample.config.datasource.TenantStorage;
+
+import lombok.extern.log4j.Log4j2;
+
 /**
  * An interceptor to add a correlation-id on logback; this will put a [correlation-id] value on all logs;
  */
+@Log4j2
 public class RequestInterceptor implements AsyncHandlerInterceptor {
 
     @Override
@@ -38,17 +42,14 @@ public class RequestInterceptor implements AsyncHandlerInterceptor {
     }
 
     private void setTenant(final HttpServletRequest request) {
-
-        System.out.println("In preHandle we are Intercepting the Request");
-        System.out.println("____________________________________________");
         String requestURI = request.getRequestURI();
         String tenantID = request.getHeader("X-TenantID");
-        System.out.println("RequestURI::" + requestURI +" || Search for X-TenantID  :: " + tenantID);
-        System.out.println("____________________________________________");
 
         if (tenantID == null) {
-            System.out.println("X-TenantID not present in the Request Header");
+            log.warn("X-TenantID not present in the Request Header; Set to default");
             tenantID = "default";
+        } else {
+            log.debug("Calling with tenant {}", tenantID);
         }
         TenantStorage.setTenantId(tenantID);
     }

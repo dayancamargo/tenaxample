@@ -1,32 +1,47 @@
 package com.tenaxample.config.datasource;
 
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import javax.sql.DataSource;
+
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.stereotype.Component;
 
-import javax.sql.DataSource;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 
+/**
+ * <p>This class will load datasources definitions from application.yml.</p>
+ * <p>Each definition in "tenants.datasource" will be loaded into map and converted to a hikari data source instance</p>
+ */
 @Component
-@ConfigurationProperties(prefix = "tenants")
+@ConfigurationProperties(prefix = "tenants") // define wich property data sources will be
 @RefreshScope
 public class DataSourceProperties {
 
+    // Load datasources property from path defined in @ConfigurationProperties
     private Map<Object, Object> datasources = new LinkedHashMap<>();
 
     public Map<Object, Object> getDatasources() {
         return datasources;
     }
 
+    /**
+     * Get a map with datasource and its configs converting to Datasource instances
+     * @param datasources map with key (instance name) and its params
+     */
     public void setDatasources(Map<String, Map<String, String>> datasources) {
-        datasources.forEach((key, value) -> this.datasources.put(key, convert(value)));
-
+        datasources.forEach((key, value) -> this.datasources.put(key, convertToDataSource(value)));
     }
 
-    public DataSource convert(Map<String, String> source) {
+    /**
+     * Convert all properties to datasource instance
+     * @param source Map with parameters to create a datasource instance
+     * @return a new datasource instance
+     */
+    private DataSource convertToDataSource(Map<String, String> source) {
         HikariConfig config = new HikariConfig();
         config.setJdbcUrl(source.get("url"));
         config.setDriverClassName(source.get("driver-class-name"));
@@ -34,7 +49,7 @@ public class DataSourceProperties {
         config.setPassword(source.get("password"));
         config.setMaximumPoolSize(Integer.parseInt(source.get("maximum-pool-size")));
         config.setPoolName(source.get("pool-name"));
-        System.out.println("config:::::::::::::::::::::::::::::::::::::::::::::::::::::::::" + config);
+
         return new HikariDataSource(config);
     }
 }

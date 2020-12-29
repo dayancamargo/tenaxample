@@ -19,6 +19,7 @@ public class DataSourceConfiguration {
     @Primary
     @Bean
     @RefreshScope
+//    @LiquibaseDataSource
     public DataSource dataSource() {
         TenantDataSource customDataSource = new TenantDataSource();
         customDataSource.setTargetDataSources(dataSourceProperties.getDatasources());

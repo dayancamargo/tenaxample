@@ -3,9 +3,9 @@
 ### Server Settings
 server:
   port: 8888
-
 ### Actuator Settings
 management:
+
   endpoints:
     enabled-by-default: true
     health:
@@ -26,15 +26,15 @@ spring:
   jpa:
     properties:
       hibernate:
-        show_sql: true
+        show_sql: false
         format_sql: true
   liquibase:
-    enabled: false
+    enabled: true
 
 ### Log Settings
 logging:
-  config: "logback-spring.xml"
-
+  config: "log4j2-spring.xml"
+  # config: "logback-spring.xml"
 ### Tenant datasource Settings
 tenants:
   datasources:

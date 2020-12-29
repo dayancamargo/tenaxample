@@ -8,39 +8,40 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
-import com.tenaxample.exception.model.Error;
 
-import lombok.extern.slf4j.Slf4j;
+import com.tenaxample.model.response.Response;
+
+import lombok.extern.log4j.Log4j2;
 
 @ControllerAdvice
 @RestController
-@Slf4j
+@Log4j2
 public class ResponseExceptionHandler {
     //Returns code 400
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(value = ServletRequestBindingException.class)
-    public Error handleServletRequestException(ServletRequestBindingException exc) {
-        return ErrorFactory.errorFromRequestBindingException(exc);
+    public Response handleServletRequestException(ServletRequestBindingException exc) {
+        return Response.build().withErrors(ErrorFactory.errorFromRequestBindingException(exc)).create();
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(value = MethodArgumentTypeMismatchException.class)
-    public Error handleMethodArgumentException(MethodArgumentTypeMismatchException matmex) {
-        return ErrorFactory.errorFromTypeMismatchException(matmex);
+    public Response handleMethodArgumentException(MethodArgumentTypeMismatchException matmex) {
+        return  Response.build().withErrors(ErrorFactory.errorFromTypeMismatchException(matmex)).create();
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
-    public Error handleMethodArgumentNotValidException(MethodArgumentNotValidException manvexc) {
-        return ErrorFactory.errorFromValidationException(manvexc);
+    public Response handleMethodArgumentNotValidException(MethodArgumentNotValidException manvexc) {
+        return  Response.build().withErrors(ErrorFactory.errorFromValidationException(manvexc)).create();
     }
 
     //Returns code 500
     //this will cathes all exceptions un-handled
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(value = Exception.class)
-    public Error handleException(Exception ex) {
+    public Response handleException(Exception ex) {
         log.error(ex.getMessage(), ex);
-        return ErrorFactory.errorFromException(ex);
+        return Response.build().withErrors(ErrorFactory.errorFromException(ex)).create();
     }
 }
