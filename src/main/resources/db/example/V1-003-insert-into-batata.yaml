@@ -1,16 +1,12 @@
 databaseChangeLog:
   - changeSet:
-      id: V1-002-insert-into-Batata
+      id: V1-003-insert-into-Batata
       author: init-commit
       preConditions:
         - onFail: MARK_RAN
           tableExists:
             tableName: Batata
       changes:
-        - sql:
-            sql: INSERT INTO Batata (name, type, last_modification) VALUES ('potato',   'English potato', CURRENT_TIMESTAMP)
-        - sql:
-            sql: INSERT INTO Batata(name, type, last_modification) VALUES ('Batata',   'Batata', CURRENT_TIMESTAMP)
         - sql:
             sql: INSERT INTO Batata(name, type, last_modification) VALUES ('patatas',  'Patata española', CURRENT_TIMESTAMP)
         - sql:

@@ -52,6 +52,10 @@ public class ErrorFactory {
      * @return internal error
      */
     public static Error errorFromException(Exception exc) {
-        return new Error("500", "Something went wrong", exc.getMessage());
+
+        return new Error(" Something went wrong", "500", exc.getMessage());
+    }
+    public static Error errorFromBaseException(BaseException exc) {
+        return exc.getError();
     }
 }

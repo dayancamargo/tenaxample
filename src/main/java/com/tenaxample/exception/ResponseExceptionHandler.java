@@ -39,6 +39,14 @@ public class ResponseExceptionHandler {
     //Returns code 500
     //this will cathes all exceptions un-handled
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(value = BaseException.class)
+    public Response handleException(BaseException ex) {
+        return Response.build().withErrors(ErrorFactory.errorFromBaseException(ex)).create();
+    }
+
+    //Returns code 500
+    //this will cathes all exceptions un-handled
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(value = Exception.class)
     public Response handleException(Exception ex) {
         log.error(ex.getMessage(), ex);

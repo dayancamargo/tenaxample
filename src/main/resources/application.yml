@@ -5,7 +5,6 @@ server:
   port: 8888
 ### Actuator Settings
 management:
-
   endpoints:
     enabled-by-default: true
     health:
@@ -24,31 +23,42 @@ spring:
       path: "/h2"
   #jpa sql logs
   jpa:
+    hibernate:
+      ddl-auto: none # do not use auto generation
     properties:
       hibernate:
         show_sql: false
         format_sql: true
   liquibase:
-    enabled: true
+    enabled: false #since we use a especial way to configure data sources, this will not work automatically
 
 ### Log Settings
 logging:
   config: "log4j2-spring.xml"
 
-### Tenant datasource Settings
+### Tenant Settings this will be loaded in TenantProperties class
 tenants:
-  datasources:
-    default:
-      driver-class-name: "org.h2.Driver"
+  default:
+    publicName: "DEFAULT"
+    datasource: # this configuration is used to create hikari data source configuration https://github.com/brettwooldridge/HikariCP
+      driverClassName: "org.h2.Driver"
       username: "sa"
       password:
-      url: "jdbc:h2:mem:defaulttestdb"
-      maximum-pool-size: 16
+      jdbcUrl: "jdbc:h2:mem:defaulttestdb"
+      maximumPoolSize: 16
       pool-name: Hikari-Default
-    example:
-      driver-class-name: "org.h2.Driver"
+      liquibase: # this configuration is used to create liquibase configuration https://docs.spring.io/spring-boot/docs/current/reference/html/appendix-application-properties.html#common-application-properties-data-migration *liquibase section*
+        enabled: true
+        change-log: classpath:db/default/changelog-master.yaml
+  example:
+    publicName: "EXAMPLE"
+    datasource:
+      driverClassName: "org.h2.Driver"
       username: "sa"
       password:
-      url: "jdbc:h2:mem:exampletestdb"
-      maximum-pool-size: 16
+      jdbcUrl: "jdbc:h2:mem:exampletestdb"
+      maximumPoolSize: 16
       pool-name: Hikari-Example
+      liquibase:
+        enabled: true
+        change-log: classpath:db/example/changelog-master.yaml

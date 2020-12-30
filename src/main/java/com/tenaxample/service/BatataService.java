@@ -24,11 +24,7 @@ public class BatataService {
     }
 
     public List findAll() {
-//        try {
-//            Thread.sleep(5000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
+
         return batataRepository.findAll();
     }
 

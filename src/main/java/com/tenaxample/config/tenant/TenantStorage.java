@@ -1,4 +1,4 @@
-package com.tenaxample.config.datasource;
+package com.tenaxample.config.tenant;
 
 public class TenantStorage {
 

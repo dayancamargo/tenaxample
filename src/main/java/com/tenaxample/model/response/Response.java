@@ -9,6 +9,7 @@ import java.util.Objects;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 
 import com.sun.istack.NotNull;
 import com.tenaxample.exception.BaseException;

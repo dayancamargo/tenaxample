@@ -1,0 +1,5 @@
+databaseChangeLog:
+  - include:
+      file: db/default/V1-001-create-table-Batata.yaml
+  - include:
+      file: db/default/V1-002-insert-into-Batata.yaml
