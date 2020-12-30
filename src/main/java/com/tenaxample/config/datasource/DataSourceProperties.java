@@ -13,7 +13,7 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
 /**
- * <p>This class will load datasources definitions from application.yml.</p>
+ * <p>This class will load data sources definitions from application.yml.</p>
  * <p>Each definition in "tenants.datasource" will be loaded into map and converted to a hikari data source instance</p>
  */
 @Component
@@ -21,7 +21,7 @@ import com.zaxxer.hikari.HikariDataSource;
 @RefreshScope
 public class DataSourceProperties {
 
-    // Load datasources property from path defined in @ConfigurationProperties
+    // Load data sources property from path defined in @ConfigurationProperties
     private Map<Object, Object> datasources = new LinkedHashMap<>();
 
     public Map<Object, Object> getDatasources() {
@@ -30,10 +30,10 @@ public class DataSourceProperties {
 
     /**
      * Get a map with datasource and its configs converting to Datasource instances
-     * @param datasources map with key (instance name) and its params
+     * @param dataSources map with key (instance name) and its params
      */
-    public void setDatasources(Map<String, Map<String, String>> datasources) {
-        datasources.forEach((key, value) -> this.datasources.put(key, convertToDataSource(value)));
+    public void setDataSources(Map<String, Map<String, String>> dataSources) {
+        dataSources.forEach((key, value) -> this.datasources.put(key, convertToDataSource(value)));
     }
 
     /**

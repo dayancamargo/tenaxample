@@ -1,20 +1,17 @@
 package com.tenaxample.config.web;
 
-import java.util.UUID;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.tenaxample.config.datasource.TenantStorage;
+import lombok.extern.log4j.Log4j2;
 import org.slf4j.MDC;
 import org.springframework.web.servlet.AsyncHandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.tenaxample.config.datasource.TenantStorage;
-
-import lombok.extern.log4j.Log4j2;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.UUID;
 
 /**
- * An interceptor to add a correlation-id on logback; this will put a [correlation-id] value on all logs;
+ * An interceptor class to get values for correalation id  (same as sleuth lib) and set tenant value (for datasource selection)
  */
 @Log4j2
 public class RequestInterceptor implements AsyncHandlerInterceptor {
@@ -24,7 +21,7 @@ public class RequestInterceptor implements AsyncHandlerInterceptor {
                              HttpServletResponse response,
                              Object object) {
 
-        MDC.put("correlation", getCorrelation(request));
+        setCorrelation(request);
         setTenant(request);
         return true;
     }
@@ -36,11 +33,19 @@ public class RequestInterceptor implements AsyncHandlerInterceptor {
         TenantStorage.clear();
     }
 
-    private String getCorrelation(final HttpServletRequest request) {
+    /**
+     * Gets correlation value or create one if absent
+     * @param request incoming request
+     */
+    private void setCorrelation(final HttpServletRequest request) {
         String id = request.getHeader("correlation-id");
-        return  id != null ? id : UUID.randomUUID().toString();
+        MDC.put("correlation", id != null ? id : UUID.randomUUID().toString());
     }
 
+    /**
+     * Gets tenant value from request (X-TenantID header) or set default;
+     * @param request incoming request
+     */
     private void setTenant(final HttpServletRequest request) {
         String requestURI = request.getRequestURI();
         String tenantID = request.getHeader("X-TenantID");

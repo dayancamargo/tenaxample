@@ -34,7 +34,7 @@ spring:
 ### Log Settings
 logging:
   config: "log4j2-spring.xml"
-  # config: "logback-spring.xml"
+
 ### Tenant datasource Settings
 tenants:
   datasources:
