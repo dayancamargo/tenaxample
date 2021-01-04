@@ -40,6 +40,10 @@
             <AppenderRef ref="Console" />
             <AppenderRef ref="RollingFile" />
         </Logger>
+        <!-- Log all SQL statements - at least debug to show-->
+        <Logger name="org.hibernate.SQL" level="${LOG_APPLICATION}" additivity="false">
+            <AppenderRef ref="Console" />
+        </Logger>
 
         <Root level="${LOG_SERVER}">
             <AppenderRef ref="Console" />
